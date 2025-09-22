@@ -1,97 +1,73 @@
 from source.py.feature import ast
-
-
-start = "numbersign_start.liga"
-mid = "numbersign_middle.liga"
-end = "numbersign_end.liga"
+from source.py.feature.base.clazz import cls_question
 
 
 def get_lookup():
+    start = ast.gly_seq("#", "sta")
+    mid = ast.gly_seq("#", "mid")
+    end = ast.gly_seq("#", "end")
     return [
         ast.subst_liga(
             "__",
-            banner=[
-                ast.ignore(ast.cls("_", "#"), "_", "_"),
-                ast.ignore(None, "_", ["_", "_"]),
-            ],
+            ign_prefix=ast.cls("_", "#"),
+            ign_suffix="_",
         ),
         ast.subst_liga(
             "#{",
-            banner=[
-                ast.ignore("#", "#", "{"),
-                ast.ignore(None, "#", ["{", "{"]),
-            ],
+            ign_prefix="#",
+            ign_suffix="{",
         ),
         ast.subst_liga(
             "#[",
-            banner=[
-                ast.ignore("#", "#", "["),
-                ast.ignore(None, "#", ["[", "["]),
-            ],
+            ign_prefix="#",
+            ign_suffix="[",
         ),
         ast.subst_liga(
             "#(",
-            banner=[
-                ast.ignore("#", "#", "("),
-                ast.ignore(None, "#", ["(", "("]),
-            ],
+            ign_prefix="#",
+            ign_suffix="(",
         ),
         ast.subst_liga(
-            "#?",
-            banner=[
-                ast.ignore("#", "#", "?"),
-                ast.ignore(None, "#", ["?", "?"]),
-            ],
+            [ast.gly("#"), cls_question.use()],
+            target=ast.gly("#?"),
+            desc="#?",
+            ign_prefix="#",
+            ign_suffix=cls_question,
         ),
         ast.subst_liga(
             "#!",
-            banner=[
-                ast.ignore("#", "#", "!"),
-                ast.ignore(None, "#", ["!", ast.cls("!", "=")]),
-            ],
+            ign_prefix="#",
+            ign_suffix=ast.cls("!", "="),
         ),
         ast.subst_liga(
             "#:",
-            banner=[
-                ast.ignore("#", "#", ":"),
-                ast.ignore(None, "#", [":", ast.cls(":", "=")]),
-            ],
+            ign_prefix="#",
+            ign_suffix=ast.cls(":", "="),
         ),
         ast.subst_liga(
             "#=",
-            banner=[
-                ast.ignore("#", "#", "="),
-                ast.ignore(None, "#", ["=", "="]),
-            ],
+            ign_prefix="#",
+            ign_suffix="=",
         ),
         ast.subst_liga(
             "#_",
-            banner=[
-                ast.ignore("#", "#", "_"),
-                ast.ignore(None, "#", ["_", ast.cls("_", "(")]),
-            ],
+            ign_suffix=ast.cls("_", "("),
         ),
         ast.subst_liga(
             "#__",
-            banner=[
-                ast.ignore(None, "#", ["_", "_", "_"]),
-            ],
+            ign_suffix="_",
         ),
         ast.subst_liga(
             "#_(",
-            banner=[
-                ast.ignore(None, "#", ["_", "(", "("]),
-            ],
+            ign_suffix="(",
         ),
         ast.subst_liga(
             "]#",
-            banner=[
-                ast.ignore("]", "]", "#"),
-                ast.ignore(None, "]", ["#", "#"]),
-            ],
+            ign_prefix="]",
+            ign_suffix="#",
         ),
         ast.Lookup(
-            "infinity_numbersigns",
+            "infinite_numbersigns",
             "#######",
             [
                 ast.subst(ast.cls(start, mid), "#", "#", mid),

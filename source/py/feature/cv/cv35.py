@@ -1,14 +1,10 @@
 import source.py.feature.ast as ast
+from source.py.feature.cv._common import GLYPHS_L, GLYPHS_1
 
 
 def cv35_subst():
     base_glyphs = [
-        "l",
-        "lacute",
-        "lcaron",
-        "lcommaaccent",
-        "ldot",
-        "lslash",
+        *[g for g in GLYPHS_L if g != 'lslash'],
         ast.gly("Cl"),
         ast.gly("al"),
         ast.gly("cl"),
@@ -57,10 +53,12 @@ def cv35_subst():
             ]
         )
 
-    result.append([ast.subst(None, "one.cv04", None, "one")])
+    result += ast.subst_map(GLYPHS_1, source_suffix=".cv04")
 
     return result
 
 
 cv35_name = "Alternative Italic `l` without center tail"
-cv35_feat_italic = ast.CharacterVariant(35, cv35_name, cv35_subst())
+cv35_feat_italic = ast.CharacterVariant(
+    id=35, desc=cv35_name, content=cv35_subst(), version="7.0", example="l"
+)

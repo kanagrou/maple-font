@@ -1,4 +1,5 @@
 from source.py.feature import ast
+from source.py.feature.base.clazz import cls_question
 from source.py.feature.calt.whitespace import (
     brace,
     colon,
@@ -12,192 +13,130 @@ def get_base_lookup():
     return [
         ast.subst_liga(
             "[|",
-            banner=[
-                ast.ignore("[", "[", "|"),
-                ast.ignore(None, "[", ["|", ast.cls("]", "|")]),
-            ],
+            ign_prefix="[",
+            ign_suffix=ast.cls("]", "|"),
         ),
         ast.subst_liga(
             "|]",
-            banner=[
-                ast.ignore(ast.cls("[", "|"), "|", "]"),
-                ast.ignore(None, "|", ["]", "]"]),
-            ],
+            ign_prefix=ast.cls("[", "|"),
+            ign_suffix="]",
         ),
         ast.subst_liga(
             "!!",
-            banner=[
-                ast.ignore("!", "!", "!"),
-                ast.ignore(None, "!", ["!", "!"]),
-                ast.ignore(["(", "?"], "!", "!"),
-                ast.ignore(["(", "?", "<"], "!", "!"),
+            ign_prefix="!",
+            ign_suffix="!",
+            extra_rules=[
+                ast.ign(["(", cls_question], "!", "!"),
+                ast.ign(["(", cls_question, "<"], "!", "!"),
             ],
         ),
         ast.subst_liga(
             "||",
-            banner=[
-                ast.ignore(ast.cls("-", "|", "[", "<"), "|", "|"),
-                ast.ignore(None, "|", ["|", ast.cls("|", "]", ">", "-")]),
-            ],
+            ign_prefix=ast.cls("|", "[", "<"),
+            ign_suffix=ast.cls("|", "]", ">"),
         ),
         ast.subst_liga(
-            "??",
-            banner=[
-                ast.ignore("?", "?", "?"),
-                ast.ignore(None, "?", ["?", "?"]),
-            ],
+            2 * [cls_question.use()],
+            target=ast.gly("??"),
+            desc="??",
+            ign_prefix=cls_question,
+            ign_suffix=cls_question,
         ),
         ast.subst_liga(
-            "???",
-            banner=[
-                ast.ignore("?", "?", ["?", "?"]),
-                ast.ignore(None, "?", ["?", "?", "?"]),
-            ],
+            3 * [cls_question.use()],
+            target=ast.gly("???"),
+            desc="???",
+            ign_prefix=cls_question,
+            ign_suffix=cls_question,
         ),
         ast.subst_liga(
             "&&",
-            banner=[
-                ast.ignore("&", "&", "&"),
-                ast.ignore(None, "&", ["&", "&"]),
-            ],
+            ign_prefix="&",
+            ign_suffix="&",
         ),
         ast.subst_liga(
             "&&&",
-            banner=[
-                ast.ignore("&", "&", ["&", "&"]),
-                ast.ignore(None, "&", ["&", "&", "&"]),
-            ],
+            ign_prefix="&",
+            ign_suffix="&",
         ),
         ast.subst_liga(
             "//",
-            banner=[
-                ast.ignore("/", "/", "/"),
-                ast.ignore(None, "/", ["/", ast.cls("/", "=")]),
-            ],
+            ign_prefix="/",
+            ign_suffix="/",
         ),
         ast.subst_liga(
             "///",
-            banner=[
-                ast.ignore("/", "/", ["/", "/"]),
-                ast.ignore(None, "/", ["/", "/", "/"]),
-            ],
+            ign_prefix="/",
+            ign_suffix="/",
         ),
         ast.subst_liga(
             "/*",
-            banner=[
-                ast.ignore(ast.cls("/", "*"), "/", "*"),
-                ast.ignore(None, "/", ["*", ast.cls("/", "*", ".")]),
-            ],
+            ign_prefix=ast.cls("/", "*"),
+            ign_suffix=ast.cls("/", "*", "."),
         ),
         ast.subst_liga(
             "/**",
-            banner=[
-                ast.ignore(ast.cls("/", "*"), "/", ["*", "*"]),
-                ast.ignore(None, "/", ["*", "*", ast.cls("/", "*", ".")]),
-            ],
+            ign_prefix=ast.cls("/", "*"),
+            ign_suffix=ast.cls("/", "*", "."),
         ),
         ast.subst_liga(
             "*/",
-            banner=[
-                ast.ignore(ast.cls("/", "*", "."), "*", "/"),
-                ast.ignore(None, "*", ["/", ast.cls("/", "*")]),
-            ],
+            ign_prefix=ast.cls("/", "*", "."),
+            ign_suffix=ast.cls("/", "*"),
         ),
         ast.subst_liga(
             "++",
-            banner=[
-                ast.ignore(ast.cls("+", ":"), "+", "+"),
-                ast.ignore(None, "+", ["+", ast.cls("+", ":")]),
-            ],
+            ign_prefix=ast.cls("+", ":"),
+            ign_suffix=ast.cls("+", ":"),
         ),
         ast.subst_liga(
             "+++",
-            banner=[
-                ast.ignore("+", "+", ["+", "+"]),
-                ast.ignore(None, "+", ["+", "+", "+"]),
-            ],
-        ),
-        ast.subst_liga(
-            "--",
-            banner=[
-                ast.ignore(ast.cls("<", "-"), "-", "-"),
-                ast.ignore(["<", ast.cls("#", "!")], "-", "-"),
-                ast.ignore(None, "-", ["-", ast.cls("-", ">")]),
-                ast.ignore(
-                    ["(", "?", "<", "!"],
-                    "-",
-                    "-",
-                ),
-                ast.ignore(
-                    ast.cls("<", "-"),
-                    "-",
-                    "-",
-                ),
-            ],
-        ),
-        ast.subst_liga(
-            "---",
-            banner=[
-                ast.ignore("<", "-", ["-", "-", ">"]),
-                ast.ignore("-", "-", ["-", "-"]),
-                ast.ignore(None, "-", ["-", "-", "-"]),
-            ],
+            ign_prefix="+",
+            ign_suffix="+",
         ),
         ast.subst_liga(
             ";;",
-            banner=[
-                ast.ignore(";", ";", ";"),
-                ast.ignore(None, ";", [";", ";"]),
-            ],
+            ign_prefix=";",
+            ign_suffix=";",
         ),
         ast.subst_liga(
             ";;;",
-            banner=[
-                ast.ignore(";", ";", [";", ";"]),
-                ast.ignore(None, ";", [";", ";", ";"]),
-            ],
+            ign_prefix=";",
+            ign_suffix=";",
         ),
         ast.subst_liga(
             "..",
-            banner=[
-                ast.ignore(".", ".", "."),
-                ast.ignore(None, ".", [".", ast.cls(".", "<", "?")]),
-            ],
+            ign_prefix=".",
+            ign_suffix=ast.cls(".", "<", cls_question),
         ),
         ast.subst_liga(
             "...",
-            banner=[
-                ast.ignore(".", ".", [".", "."]),
-                ast.ignore(None, ".", [".", ".", ast.cls(".", "<", "?")]),
-            ],
+            ign_prefix=".",
+            ign_suffix=ast.cls(".", "<", cls_question),
         ),
         ast.subst_liga(
-            ".?",  # Zig
-            banner=[
-                ast.ignore(".", ".", "?"),
-                ast.ignore(None, ".", ["?", "?"]),
-            ],
+            [ast.gly("."), cls_question.use()],  # Zig
+            target=ast.gly(".?"),
+            desc=".?",
+            ign_prefix=".",
+            ign_suffix=cls_question,
         ),
         ast.subst_liga(
-            "?.",  # TypeScript / Rust
-            banner=[
-                ast.ignore("?", "?", "."),
-                ast.ignore(None, "?", [".", ast.cls(".", "=", "?")]),
-            ],
+            [cls_question.use(), ast.gly(".")],  # TypeScript / Rust
+            target=ast.gly("?."),
+            desc="?.",
+            ign_prefix=cls_question,
+            ign_suffix=ast.cls(".", "=", cls_question),
         ),
         ast.subst_liga(
             "..<",  # Swift / Kotlin
-            banner=[
-                ast.ignore(".", ".", [".", "<"]),
-                ast.ignore(None, ".", [".", "<", ast.cls("<", "/", ">")]),
-            ],
+            ign_prefix=".",
+            ign_suffix=ast.cls("<", "/", ">"),
         ),
         ast.subst_liga(
             ".=",  # Swift
-            banner=[
-                ast.ignore(".", ".", "="),
-                ast.ignore(None, ".", ["=", ast.cls("=", ">")]),
-            ],
+            ign_prefix=".",
+            ign_suffix=ast.cls("=", ">"),
         ),
     ]
 

@@ -3,40 +3,35 @@ from source.py.feature import ast
 
 def get_lookup():
     return [
-        ast.subst_liga("Cl", banner=[ast.ignore(None, "C", ["l", "l"])]),
-        ast.subst_liga("al", banner=[ast.ignore(None, "a", ["l", "l"])]),
-        ast.subst_liga("cl", banner=[ast.ignore(None, "c", ["l", "l"])]),
-        ast.subst_liga("el", banner=[ast.ignore(None, "e", ["l", "l"])]),
-        ast.subst_liga("il", banner=[ast.ignore(None, "i", ["l", "l"])]),
-        ast.subst_liga("tl", banner=[ast.ignore(None, "l", ["l", "l"])]),
-        ast.subst_liga("ul", banner=[ast.ignore(None, "u", ["l", "l"])]),
-        ast.subst_liga("xl", banner=[ast.ignore(None, "x", ["l", "l"])]),
-        ast.subst_liga("ff", banner=[ast.ignore(None, "f", ["f", "f"])]),
-        ast.subst_liga("tt", banner=[ast.ignore(None, "t", ["t", "t"])]),
-        ast.subst_liga("all", banner=[ast.ignore(None, "a", ["l", "l", "l"])]),
-        ast.subst_liga("ell", banner=[ast.ignore(None, "e", ["l", "l", "l"])]),
-        ast.subst_liga("ill", banner=[ast.ignore(None, "i", ["l", "l", "l"])]),
-        ast.subst_liga("ull", banner=[ast.ignore(None, "u", ["l", "l", "l"])]),
+        ast.subst_liga("Cl", desc="italic Cl", ign_suffix="l"),
+        ast.subst_liga("al", desc="italic al", ign_suffix="l"),
+        ast.subst_liga("cl", desc="italic cl", ign_suffix="l"),
+        ast.subst_liga("el", desc="italic el", ign_suffix="l"),
+        ast.subst_liga("il", desc="italic il", ign_suffix="l"),
+        ast.subst_liga("tl", desc="italic tl", ign_suffix="l"),
+        ast.subst_liga("ul", desc="italic ul", ign_suffix="l"),
+        ast.subst_liga("xl", desc="italic xl", ign_suffix="l"),
+        ast.subst_liga("ff", desc="italic ff", ign_prefix="f", ign_suffix="f"),
+        ast.subst_liga(
+            "tt", desc="italic tt", ign_prefix="t", ign_suffix=ast.cls("t", "l")
+        ),
+        ast.subst_liga("all", desc="italic all", ign_suffix="l"),
+        ast.subst_liga("ell", desc="italic ell", ign_suffix="l"),
+        ast.subst_liga("ill", desc="italic ill", ign_suffix="l"),
+        ast.subst_liga("ull", desc="italic ull", ign_suffix="l"),
         ast.subst_liga(
             "ll",
-            banner=[
-                ast.ignore(
-                    ast.cls(
-                        [
-                            "C",
-                            "a",
-                            "c",
-                            "e",
-                            "i",
-                            "t",
-                            "u",
-                            "x",
-                        ]
-                    ),
-                    "l",
-                    "l",
-                ),
-                ast.ignore(None, "l", ["l", "l"]),
-            ],
+            desc="italic ll",
+            ign_prefix=ast.cls(
+                "C",
+                "a",
+                "c",
+                "e",
+                "i",
+                "t",
+                "u",
+                "x",
+            ),
+            ign_suffix="l",
         ),
     ]

@@ -1,5 +1,5 @@
 import source.py.feature.ast as ast
-from source.py.feature.base.clazz import uppercase
+from source.py.feature.base.clazz import cls_uppercase
 
 
 comb_top_acc = ast.Clazz(
@@ -135,7 +135,7 @@ ccmp_other = ast.Lookup(
             end_other,
         ),
         ast.subst(marks_comb, marks_comb, None, marks_comb_case),
-        ast.subst(uppercase, marks_comb, None, marks_comb_case),
+        ast.subst(cls_uppercase, marks_comb, None, marks_comb_case),
         ast.subst(None, marks_comb, marks_comb_case, marks_comb_case),
         ast.subst(marks_comb_case, marks_comb, None, marks_comb_case),
     ],
@@ -184,8 +184,11 @@ __ccmp = [
     ccmp_other.use(),
 ]
 
-ccmp_feature = ast.Feature("ccmp", __ccmp)
 
-ccmp_features_cn_only = ast.Feature("ccmp", ccmp_jp)
+def get_ccmp_feature(cn: bool, cn_only: bool = False):
+    if cn:
+        content = ccmp_jp if cn_only else [__ccmp, ccmp_jp]
+    else:
+        content = __ccmp
 
-ccmp_features_cn = ast.Feature("ccmp", [__ccmp, ccmp_jp])
+    return ast.Feature("ccmp", content, "7.0")

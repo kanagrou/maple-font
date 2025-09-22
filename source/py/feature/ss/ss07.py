@@ -6,21 +6,19 @@ def ss07_subst():
         ast.subst_liga(
             ">>",
             lookup_name=f"relax_{ast.gly('>>')}",
-            banner=[
-                ast.ignore(ast.cls(">", "/", "<"), ">", ">"),
-                ast.ignore(None, ">", [">", ">"]),
-            ],
+            ign_prefix=ast.cls(">", "/", "<"),
+            ign_suffix=">",
         ),
         ast.subst_liga(
             ">>>",
             lookup_name=f"relax_{ast.gly('>>>')}",
-            banner=[
-                ast.ignore(">", ">", [">", ">"]),
-                ast.ignore(None, ">", [">", ">", ">"]),
-            ],
+            ign_prefix=">",
+            ign_suffix=">",
         ),
     ]
 
 
-ss07_name = "Break connected strokes between italic letters (`>>` or `>>>`)"
-ss07_feat = ast.StylisticSet(7, ss07_name, ss07_subst())
+ss07_name = "Relax the conditions for multiple greaters ligatures (`>>` or `>>>`)"
+ss07_feat = ast.StylisticSet(
+    id=7, desc=ss07_name, content=ss07_subst(), version="7.0", example=">>>"
+)
